@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<table th:fragment="productTable" class="table table-striped">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Quantity</th>
+        <th>Last Updated</th>
+        <th>Category</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr th:each="pro :${products}">
+            <td th:text="${pro.id}"></td>
+            <td th:text="${pro.name}"></td>
+            <td th:text="${pro.quantity}"></td>
+            <td th:text="${pro.lastUpdate}"></td>
+            <td th:text="${pro.category.name}"></td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>
