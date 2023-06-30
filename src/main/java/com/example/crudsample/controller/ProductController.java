@@ -47,6 +47,13 @@ public class ProductController {
         return "list-category";
     }
 
+    @GetMapping("/category/delete")
+    public String deleteCategory(int id) {
+        productService.deleteCategory(id);
+        return "redirect:/list-category";
+
+    }
+
     @GetMapping("/product")
     public ModelAndView productForm(@ModelAttribute("categories") List<Category> categories) {
         ModelAndView mv = new ModelAndView("product-form",
@@ -95,9 +102,10 @@ public class ProductController {
     //explicit update
     @PostMapping("/product/update")
     public String saveUpdateProduct(Product product) {
-        System.out.println("Id:==============" + product.getId());
         product.setId(pId);
         productService.updateProduct(product);
+        /*productService.updateProductV2(pId, product); ==> implicit update
+        * */
         return "redirect:/list-product";
     }
 

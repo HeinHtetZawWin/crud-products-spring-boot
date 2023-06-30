@@ -7,12 +7,14 @@
     <tr>
       <th>Id</th>
       <th>Name</th>
+      <th>Action</th>
     </tr>
   </thead>
   <tbody>
   <tr th:each="cat :${categories}">
-    <th th:text="${cat.id}"></th>
-    <th th:text="${cat.name}"></th>
+    <td th:text="${cat.id}"></td>
+    <td th:text="${cat.name}"></td>
+    <td th:if="${cat.products.isEmpty()}"><a th:href="@{'/category/delete?id=' + ${cat.id}}" class="btn btn-outline-danger">Delete</a></td>
   </tr>
   </tbody>
 </table>

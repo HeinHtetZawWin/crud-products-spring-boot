@@ -45,11 +45,27 @@ public class ProductService {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
+    //explicit Update
     public void updateProduct(Product product) {
         productDao.saveAndFlush(product);
     }
 
+    //implicit Update
+    @Transactional
+    public void updateProductV2(int id, Product product) {
+        Product existingProduct = findProductById(id);
+        existingProduct.setCategory(product.getCategory());
+        existingProduct.setLastUpdate(product.getLastUpdate());
+        existingProduct.setName(product.getName());
+        existingProduct.setQuantity(product.getQuantity());
+        existingProduct.setPrice(product.getPrice());
+    }
+
     public void deleteProduct(int id) {
         productDao.deleteById(id);
+    }
+
+    public void deleteCategory(int id) {
+        categoryDao.deleteById(id);
     }
 }
