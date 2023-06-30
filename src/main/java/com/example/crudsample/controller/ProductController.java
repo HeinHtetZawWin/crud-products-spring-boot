@@ -4,6 +4,7 @@ import com.example.crudsample.dao.CategoryDao;
 import com.example.crudsample.dao.ProductDao;
 import com.example.crudsample.ds.Category;
 import com.example.crudsample.ds.Product;
+import com.example.crudsample.service.ProductService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,13 +19,10 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-@RequestMapping
 public class ProductController {
 
     @Autowired
-    private CategoryDao categoryDao;
-    @Autowired
-    private ProductDao productDao;
+    private ProductService productService;
 
     @GetMapping("/category")
     public String categoryForm(Model model) {
@@ -38,14 +36,14 @@ public class ProductController {
             return "category-form";
         }
 
-        categoryDao.save(category);
+        productService.saveCategory(category);
 
         return "redirect:/list-category";
     }
 
     @GetMapping("/list-category")
     public String listCategory(Model model) {
-        model.addAttribute("categories", categoryDao.findAll());
+        model.addAttribute("categories", productService.findAllCategory());
         return "list-category";
     }
 
@@ -57,28 +55,50 @@ public class ProductController {
         return mv;
     }
 
-    @Transactional
     @PostMapping("/product")
     public String saveProduct(Product product, BindingResult result) {
         if (result.hasErrors()) {
             return "product-form";
         }
 
-        Category category = categoryDao.findById(product.getCategory().getId()).get();
-        category.addProduct(product);
-        productDao.save(product);
+        productService.saveProduct(product);
         return "redirect:/list-product";
     }
 
     @GetMapping("/list-product")
     public String listProducts(Model model) {
-        model.addAttribute("products", productDao.findAll());
+        model.addAttribute("products", productService.findAllProduct());
         return "list-product";
+    }
+
+    @GetMapping("/product/delete")
+    public String deleteProduct(int id) {
+        productService.deleteProduct(id);
+        return "redirect:/list-product";
+
     }
 
     @ModelAttribute("categories")
     public List<Category> listCategory() {
-        return categoryDao.findAll();
+        return productService.findAllCategory();
+    }
+
+    @GetMapping("/product/update")
+    public String updateProduct(int id, Model model) {
+        this.pId = id;
+        model.addAttribute("product", productService.findProductById(id));
+        return "product-update";
+    }
+
+    private int pId;
+
+    //explicit update
+    @PostMapping("/product/update")
+    public String saveUpdateProduct(Product product) {
+        System.out.println("Id:==============" + product.getId());
+        product.setId(pId);
+        productService.updateProduct(product);
+        return "redirect:/list-product";
     }
 
 

@@ -9,7 +9,10 @@
         <th>Name</th>
         <th>Quantity</th>
         <th>Last Updated</th>
+        <th>Price</th>
         <th>Category</th>
+        <th>Action</th>
+        <th>Update</th>
     </tr>
     </thead>
     <tbody>
@@ -18,7 +21,12 @@
             <td th:text="${pro.name}"></td>
             <td th:text="${pro.quantity}"></td>
             <td th:text="${pro.lastUpdate}"></td>
+            <td th:text="'$' + ${pro.price}"></td>
             <td th:text="${pro.category.name}"></td>
+            <td><a th:href="@{'/product/delete?id=' + ${pro.id}}"
+                   class="btn btn-outline-danger">Delete</a></td>
+            <td><a th:href="@{'/product/update?id=' + ${pro.id}}"
+                   class="btn btn-outline-success">Update</a></td>
         </tr>
     </tbody>
 </table>
